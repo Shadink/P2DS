@@ -2,12 +2,10 @@
 import 'Programa.dart';
 
 class MaquinaVirtual extends Programa {
-    String so;
-    String version;
-    int size;
+    String so = "";
+    String version = "";
+    int size = 0;
     List<Programa> hijos = [];
-
-    MaquinaVirtual(this.so, this.version, this.size, this.hijos);
 
     @override
     void mostrar(){

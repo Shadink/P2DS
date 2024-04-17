@@ -5,9 +5,7 @@ import 'mvbuilder.dart';
 class Director{
   MVBuilder builder = LinuxBuilder();
 
-  Director(MVBuilder n_builder){
-    builder = n_builder;
-  }
+  Director(this.builder);
 
   void build_mv(){
     builder.createNewMv();

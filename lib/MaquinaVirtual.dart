@@ -1,5 +1,5 @@
 
-part 'Programa.dart'
+import 'Programa.dart';
 
 class MaquinaVirtual extends Programa {
     String so;

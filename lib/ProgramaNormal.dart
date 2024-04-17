@@ -1,4 +1,4 @@
-part 'Programa.dart'
+import 'Programa.dart'
 
 class ProgramaNormal extends Programa {
     String nombre;

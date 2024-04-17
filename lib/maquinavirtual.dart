@@ -1,23 +1,27 @@
-import 'programa.dart';
 
-class MaquinaVirtual extends Programa{
-  String so = "";
-  String version = "";
-  String size = "";
-  List<Programa> hijos = [];
+import 'Programa.dart';
 
-  void mostrar(){
-    print("Máquina virtual que contiene:");
-    for(int i = 0; i < hijos.length; i++){
-      hijos[i].mostrar();
+class MaquinaVirtual extends Programa {
+    String so;
+    String version;
+    int size;
+    List<Programa> hijos = [];
+
+    MaquinaVirtual(this.so, this.version, this.size, this.hijos);
+
+    @override
+    void mostrar(){
+        print("Máquina virtual que contiene:");
+        for (Programa p in hijos){
+            p.mostrar();
+        }
     }
-  }
 
-  void agregar(Programa n){
-    hijos.add(n);
-  }
+    void agregar(Programa n){
+        hijos.add(n);
+    }           
 
-  void quitar(Programa n){
-    hijos.remove(n);
-  }
+    void quitar(Programa i){
+        hijos.remove(i);
+    }
 }

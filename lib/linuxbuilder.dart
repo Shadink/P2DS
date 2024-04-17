@@ -14,6 +14,6 @@ class LinuxBuilder extends MVBuilder{
 
   @override
   void addSize(){
-    mv.size = "32GB";
+    mv.size = 32;
   }
 }

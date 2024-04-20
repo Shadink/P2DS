@@ -60,6 +60,57 @@ class _MyHomePageState extends State<MyHomePage> {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
+            Column(
+              children: [
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Expanded(
+                      child: Padding(
+                        padding: EdgeInsets.symmetric(horizontal: 20.0),
+                        child: TextField(
+                          controller: _controller,
+                          decoration: InputDecoration(
+                            labelText: 'Programa',
+                            labelStyle: TextStyle(
+                              color: Color.fromARGB(255, 0, 38, 255),
+                            ),
+                          ),
+                          onSubmitted: (String nombre) {
+                            if (nombre.isNotEmpty) {
+                              p = ProgramaNormal(nombre);
+                              setState(() {
+                                root.add(p);
+                                _controller.clear();
+                              });
+                            }
+                          },
+                        ),
+                      ),
+                    ),
+                    SizedBox(width: 10.0), // Espacio entre el campo de texto y el botón
+                    ElevatedButton(
+                      onPressed: () {
+                        if (_controller.text.isNotEmpty) {
+                          p = ProgramaNormal(_controller.text);
+                          setState(() {
+                            root.add(p);
+                            _controller.clear();
+                          });
+                        }
+                      },
+                      child: Text(
+                        'Agregar Programa',
+                        style: const TextStyle(
+                          color: Color.fromARGB(255, 0, 38, 255),
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+              ],
+            ),
+            SizedBox(height: 20.0),
             Row (
               mainAxisAlignment: MainAxisAlignment.center,
               children: [

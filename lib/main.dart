@@ -46,11 +46,10 @@ class _MyHomePageState extends State<MyHomePage> {
   late Director  _directorl = Director(_linux);
   late Programa p;
   List<Programa> root = [];
-  final TextEditingController _controller = TextEditingController();
+  TextEditingController _controller = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
-    
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Theme.of(context).colorScheme.inversePrimary,
@@ -143,6 +142,54 @@ class _MyHomePageState extends State<MyHomePage> {
                         Expanded(
                           child: Text(root[index].mostrar()),
                         ),
+                        Expanded(
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              Expanded(
+                                child: Padding(
+                                  padding: EdgeInsets.symmetric(horizontal: 20.0),
+                                  child: TextField(
+                                    controller: _controller,
+                                    decoration: InputDecoration(
+                                      labelText: 'Programa',
+                                      labelStyle: TextStyle(
+                                        color: Color.fromARGB(255, 0, 38, 255),
+                                      ),
+                                    ),
+                                    onSubmitted: (String nombre) {
+                                      if (nombre.isNotEmpty) {
+                                        p = ProgramaNormal(nombre);
+                                        setState(() {
+                                          root[index].agregar(p);
+                                        });
+                                      }
+                                    },
+                                  ),
+                                ),
+                              ),
+                              SizedBox(width: 10.0), // Espacio entre el campo de texto y el botón
+                              ElevatedButton(
+                                onPressed: () {
+                                  if (_controller.text.isNotEmpty) {
+                                    p = ProgramaNormal(_controller.text);
+                                    setState(() {
+                                      root[index].agregar(p);
+                                      _controller.clear();
+                                    });
+                                  }
+                                },
+                                child: Text(
+                                  'Agregar Programa',
+                                  style: const TextStyle(
+                                    color: Color.fromARGB(255, 0, 38, 255),
+                                  ),
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                        SizedBox(width: 20.0),
                         ElevatedButton(
                           onPressed: () {
                             setState(() {

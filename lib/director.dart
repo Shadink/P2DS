@@ -1,9 +1,8 @@
 import 'package:ejgrupal/linuxbuilder.dart';
-
 import 'mvbuilder.dart';
 
 class Director{
-  MVBuilder builder = LinuxBuilder();
+  MVBuilder builder;
 
   Director(this.builder);
 

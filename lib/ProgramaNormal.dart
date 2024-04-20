@@ -1,4 +1,4 @@
-import 'Programa.dart';
+import 'programa.dart';
 
 class ProgramaNormal extends Programa {
     String nombre;
@@ -6,8 +6,8 @@ class ProgramaNormal extends Programa {
     ProgramaNormal(this.nombre);
 
     @override
-    void mostrar() {
-        print("Programa de nombre $nombre");
+    String mostrar() {
+        return "Programa de nombre $nombre";
     }
 }
 

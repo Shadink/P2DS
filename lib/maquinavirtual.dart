@@ -1,5 +1,5 @@
 
-import 'Programa.dart';
+import 'programa.dart';
 
 class MaquinaVirtual extends Programa {
     String so = "";
@@ -8,18 +8,19 @@ class MaquinaVirtual extends Programa {
     List<Programa> hijos = [];
 
     @override
-    void mostrar(){
-        print("Máquina virtual que contiene:");
+    String mostrar(){
+        String salida = "Máquina virtual $version que contiene:";
         for (Programa p in hijos){
-            p.mostrar();
+            salida += p.mostrar();
         }
+        return salida;
     }
 
     void agregar(Programa n){
         hijos.add(n);
     }           
 
-    void quitar(Programa i){
-        hijos.remove(i);
+    void quitar(int i){
+        hijos.removeAt(i);
     }
 }

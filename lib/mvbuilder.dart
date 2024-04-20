@@ -1,9 +1,9 @@
 import 'maquinavirtual.dart';
-import 'Programa.dart';
+import 'programa.dart';
 
 abstract class MVBuilder{
   List<Programa> hijos = [];
-  MaquinaVirtual mv = MaquinaVirtual();
+  late MaquinaVirtual mv;
 
   void createNewMv(){
     mv = MaquinaVirtual();

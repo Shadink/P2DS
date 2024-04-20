@@ -1,3 +1,3 @@
 abstract class Programa {
-    void mostrar();
+    String mostrar();
 }

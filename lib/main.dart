@@ -1,4 +1,15 @@
+// ignore_for_file: prefer_const_literals_to_create_immutables, prefer_const_constructors
+
+import 'dart:collection';
+
 import 'package:flutter/material.dart';
+import 'director.dart';
+import 'mvbuilder.dart';
+import 'windowsbuilder.dart';
+import 'linuxbuilder.dart';
+import 'maquinavirtual.dart';
+import 'programa.dart';
+import 'programanormal.dart';
 
 void main() {
   runApp(const MyApp());
@@ -11,7 +22,7 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'Flutter Demo',
+      title: 'Máquinas Virtuales',
       theme: ThemeData(
         // This is the theme of your application.
         //
@@ -31,7 +42,7 @@ class MyApp extends StatelessWidget {
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
         useMaterial3: true,
       ),
-      home: const MyHomePage(title: 'Flutter Demo Home Page'),
+      home: const MyHomePage(title: 'Máquinas Virtuales'),
     );
   }
 }
@@ -55,17 +66,19 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
-  int _counter = 0;
+  final WindowsBuilder _windows = WindowsBuilder();
+  final MVBuilder _linux = LinuxBuilder();
+  late Director _directorw, _directorl;
+  late Programa p;
+  final TextEditingController _controller = TextEditingController();
 
-  void _incrementCounter() {
-    setState(() {
-      // This call to setState tells the Flutter framework that something has
-      // changed in this State, which causes it to rerun the build method below
-      // so that the display can reflect the updated values. If we changed
-      // _counter without calling setState(), then the build method would not be
-      // called again, and so nothing would appear to happen.
-      _counter++;
-    });
+  @override
+  void initState() {
+    super.initState();
+    _directorw = Director(_windows);
+    _directorw.build_mv();
+    _directorl = Director(_linux);
+    _directorl.build_mv();
   }
 
   @override
@@ -104,22 +117,68 @@ class _MyHomePageState extends State<MyHomePage> {
           // action in the IDE, or press "p" in the console), to see the
           // wireframe for each widget.
           mainAxisAlignment: MainAxisAlignment.center,
-          children: <Widget>[
-            const Text(
-              'You have pushed the button this many times:',
+          children: [
+            Padding(
+              padding: EdgeInsets.symmetric(horizontal: 20.0),
+              child: TextField(
+                controller: _controller,
+                decoration: InputDecoration(
+                  labelText: 'Título del programa',
+                  labelStyle: TextStyle(
+                    color: Color.fromARGB(255, 0, 38, 255),
+                  ),
+                ),
+                onSubmitted: (String programa) {
+                  if (programa.isNotEmpty) {
+                    p = ProgramaNormal(programa);
+                    setState(() {
+                      _windows.mv.agregar(p);
+                      _controller.clear();
+                    });
+                  }
+                },
+              ),
             ),
-            Text(
-              '$_counter',
-              style: Theme.of(context).textTheme.headlineMedium,
+            SizedBox(height: 10.0),
+            ElevatedButton(
+              onPressed: () {
+                if (_controller.text.isNotEmpty) {
+                  p = ProgramaNormal(_controller.text);
+                  setState(() {
+                    _windows.mv.agregar(p);
+                    _controller.clear();
+                  });
+                }
+              },
+              child: Text(
+                'Agregar Programa',
+                style: const TextStyle(
+                  color: Color.fromARGB(255, 0, 38, 255),
+                ),
+              ),
             ),
-          ],
+            SizedBox(height: 10.0),
+            Expanded(
+              child: ListView.builder(
+                itemCount: _windows.mv.hijos.length,
+                itemBuilder: (BuildContext context, int index) {
+                  return ListTile(
+                    title: Text(_windows.mv.hijos[index].mostrar()),
+                    trailing: IconButton(
+                      icon: Icon(Icons.delete),
+                      onPressed: () {
+                        setState(() {
+                          _windows.mv.quitar(index);
+                        });
+                      },
+                    ),
+                  );
+                },
+              ),
+            ),
+          ]
         ),
       ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: _incrementCounter,
-        tooltip: 'Increment',
-        child: const Icon(Icons.add),
-      ), // This trailing comma makes auto-formatting nicer for build methods.
     );
   }
 }

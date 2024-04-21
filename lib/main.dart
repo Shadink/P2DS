@@ -138,8 +138,8 @@ class _MyHomePageState extends State<MyHomePage> {
                           int size = int.tryParse(_sizeController.text) ?? 0;
                           String result = prog.actualizar(version, size);
                           ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-                            content: Text(result),
-                            backgroundColor: Color.fromARGB(255, 100, 95, 255),
+                            content: Text(result, style: TextStyle(color: Colors.black),),
+                            backgroundColor: Color.fromARGB(255, 194, 220, 255),
                           ));
                           setState(() {});
                           Navigator.of(context).pop();

@@ -43,7 +43,7 @@ class ProgramaNormal extends Programa {
 
     @override
     String actualizar(String version, int tamActu) {
-        return 'Programa normal no se actualiza\n';
+        return 'Programa normal no se actualiza';
     }
 
     @override

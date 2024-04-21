@@ -7,7 +7,7 @@ class ProgramaNormal extends Programa {
 
     @override
     String mostrar() {
-        return "Programa de nombre $nombre\n\t\t";
+        return "Programa de nombre $nombre\n";
     }
 
     @override

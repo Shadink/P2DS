@@ -46,6 +46,72 @@ class _MyHomePageState extends State<MyHomePage> {
   List<Programa> root = [];
   TextEditingController _controller = TextEditingController();
 
+  Widget filaBotones(Programa prog, int tab) {
+  String t = '';
+  for (int i=0 ; i<tab ; i++) t += '\t';
+  return Column(
+    crossAxisAlignment: CrossAxisAlignment.start,
+    children: [
+      Row(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Expanded(
+            child: Text(t + prog.mostrar()),
+          ),
+          ElevatedButton(
+            onPressed: () {
+              if (_controller.text.isNotEmpty) {
+                p = ProgramaNormal(_controller.text);
+                setState(() {
+                  prog.agregar(p);
+                  _controller.clear();
+                });
+              }
+            },
+            child: Text(
+              'Agregar Programa',
+              style: const TextStyle(
+                color: Color.fromARGB(255, 0, 38, 255),
+              ),
+            ),
+          ),
+          SizedBox(width: 20.0),
+          ElevatedButton(
+            onPressed: () {
+              setState(() {
+                prog.agregar(_directorl.build_mv());
+              });
+            },
+            child: Text('Agregar Linux'),
+          ),
+          SizedBox(width: 20.0),
+          ElevatedButton(
+            onPressed: () {
+              setState(() {
+                prog.agregar(_directorw.build_mv());
+              });
+            },
+            child: Text('Agregar Windows'),
+          ),
+          SizedBox(width: 20.0),
+          IconButton(
+            icon: Icon(Icons.delete),
+            onPressed: () {
+              setState(() {
+                //root.removeAt(index);
+              });
+            },
+          ),
+        ],
+      ),
+      if (prog.hijos.isNotEmpty)
+        Column(
+          children: prog.hijos.map((childProg) => filaBotones(childProg, tab+2)).toList(),
+        ),
+    ],
+  );
+}
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -139,56 +205,7 @@ class _MyHomePageState extends State<MyHomePage> {
                   return Container(
                     color: index.isEven ? Colors.grey.shade200 : null,
                     child: ListTile(
-                      title: Row(
-                        children: [
-                          Expanded(
-                            child: Text(root[index].mostrar()),
-                          ),
-                          ElevatedButton(
-                            onPressed: () {
-                              if (_controller.text.isNotEmpty) {
-                                p = ProgramaNormal(_controller.text);
-                                setState(() {
-                                  root[index].agregar(p);
-                                  _controller.clear();
-                                });
-                              }
-                            },
-                            child: Text(
-                              'Agregar Programa',
-                              style: const TextStyle(
-                                color: Color.fromARGB(255, 0, 38, 255),
-                              ),
-                            ),
-                          ),
-                          SizedBox(width: 20.0),
-                          ElevatedButton(
-                            onPressed: () {
-                              setState(() {
-                                root[index].agregar(_directorl.build_mv());
-                              });
-                            },
-                            child: Text('Agregar Linux'),
-                          ),
-                          SizedBox(width: 20.0),
-                          ElevatedButton(
-                            onPressed: () {
-                              setState(() {
-                                root[index].agregar(_directorw.build_mv());
-                              });
-                            },
-                            child: Text('Agregar Windows'),
-                          ),
-                        ],
-                      ),
-                      trailing: IconButton(
-                        icon: Icon(Icons.delete),
-                        onPressed: () {
-                          setState(() {
-                            root[index].quitar(index);
-                          });
-                        },
-                      ),
+                      title: filaBotones(root[index], 2),
                     ),
                   );
                 },

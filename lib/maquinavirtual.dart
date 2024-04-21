@@ -8,7 +8,7 @@ class MaquinaVirtual extends Programa {
 
     @override
     String mostrar(){
-        String salida = "Máquina virtual $version:\n\t";
+        String salida = "Máquina virtual $version:\n\t\t";
         for (Programa p in hijos){
             salida += p.mostrar();
         }

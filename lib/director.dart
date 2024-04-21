@@ -7,11 +7,11 @@ class Director{
 
   Director(this.builder);
 
-  MaquinaVirtual build_mv(){
-    builder.createNewMv();
-    builder.addSo();
-    builder.addVersion();
-    builder.addSize(); 
+  MaquinaVirtual construir_MV(){
+    builder.crearNuevaMV();
+    builder.anadirSO();
+    builder.anadirVersion();
+    builder.anadirTamano(); 
     return builder.mv;
   }
 }

@@ -3,17 +3,17 @@ import 'mvbuilder.dart';
 class WindowsBuilder extends MVBuilder{
 
   @override
-  void addSo(){
+  void anadirSO(){
     mv.so = "Windows";
   }
 
   @override
-  void addVersion(){
+  void anadirVersion(){
     mv.version = "11";
   }
 
   @override
-  void addSize(){
+  void anadirTamano(){
     mv.size = 64;
   }
 }

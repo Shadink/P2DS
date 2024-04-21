@@ -3,17 +3,17 @@ import 'mvbuilder.dart';
 class LinuxBuilder extends MVBuilder{
 
   @override
-  void addSo(){
+  void anadirSO(){
     mv.so = "Ubuntu";
   }
 
   @override
-  void addVersion(){
+  void anadirVersion(){
     mv.version = "22";
   }
 
   @override
-  void addSize(){
+  void anadirTamano(){
     mv.size = 32;
   }
 }

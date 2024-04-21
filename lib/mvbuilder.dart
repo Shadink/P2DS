@@ -5,11 +5,11 @@ abstract class MVBuilder{
   List<Programa> hijos = [];
   late MaquinaVirtual mv;
 
-  void createNewMv(){
+  void crearNuevaMV(){
     mv = MaquinaVirtual();
   }
 
-  void addSo();
-  void addVersion();
-  void addSize();
+  void anadirSO();
+  void anadirVersion();
+  void anadirTamano();
 }

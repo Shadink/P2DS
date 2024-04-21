@@ -79,7 +79,7 @@ class _MyHomePageState extends State<MyHomePage> {
           ElevatedButton(
             onPressed: () {
               setState(() {
-                prog.agregar(_directorl.build_mv());
+                prog.agregar(_directorl.construir_MV());
               });
             },
             child: Text('Agregar Linux'),
@@ -88,7 +88,7 @@ class _MyHomePageState extends State<MyHomePage> {
           ElevatedButton(
             onPressed: () {
               setState(() {
-                prog.agregar(_directorw.build_mv());
+                prog.agregar(_directorw.construir_MV());
               });
             },
             child: Text('Agregar Windows'),
@@ -243,7 +243,7 @@ class _MyHomePageState extends State<MyHomePage> {
                 ElevatedButton(
                   onPressed: () {
                     setState(() {
-                      root.add(_directorl.build_mv());
+                      root.add(_directorl.construir_MV());
                     });
                   },
                   child: Text('Agregar Máquina Virtual Linux'),
@@ -252,7 +252,7 @@ class _MyHomePageState extends State<MyHomePage> {
                 ElevatedButton(
                   onPressed: () {
                     setState(() {
-                      root.add(_directorw.build_mv());
+                      root.add(_directorw.construir_MV());
                     });
                   },
                   child: Text('Agregar Máquina Virtual Windows'),

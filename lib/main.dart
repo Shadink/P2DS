@@ -181,6 +181,14 @@ class _MyHomePageState extends State<MyHomePage> {
                           ),
                         ],
                       ),
+                      trailing: IconButton(
+                        icon: Icon(Icons.delete),
+                        onPressed: () {
+                          setState(() {
+                            root[index].quitar(index);
+                          });
+                        },
+                      ),
                     ),
                   );
                 },

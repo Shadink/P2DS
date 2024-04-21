@@ -45,15 +45,15 @@ class _MyHomePageState extends State<MyHomePage> {
   late Programa p;
   List<Programa> root = [];
   TextEditingController _controller = TextEditingController();
+  TextEditingController _versionController = TextEditingController();
+  TextEditingController _sizeController = TextEditingController();
 
   Widget filaBotones(Programa prog, int tab, Programa padre) {
   String t = '';
   for (int i=0 ; i<tab ; i++) t += '\t';
   return Column(
-    crossAxisAlignment: CrossAxisAlignment.start,
     children: [
       Row(
-        crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Expanded(
             child: Text(t + prog.mostrar()),
@@ -92,6 +92,65 @@ class _MyHomePageState extends State<MyHomePage> {
               });
             },
             child: Text('Agregar Windows'),
+          ),
+          SizedBox(width: 20.0),
+          IconButton(
+            icon: Icon(Icons.update),
+            onPressed: () {
+              showDialog(
+                context: context,
+                builder: (BuildContext context) {
+                  return AlertDialog(
+                    title: Text('Actualizar Máquina Virtual'),
+                    content: SingleChildScrollView(
+                      child: ListBody(
+                        children: <Widget>[
+                          Text('Versión:'),
+                          TextField(
+                            controller: _versionController,
+                            keyboardType: TextInputType.text,
+                            decoration: InputDecoration(
+                              hintText: 'Versión',
+                            ),
+                          ),
+                          SizedBox(height: 10),
+                          Text('Tamaño en GB:'),
+                          TextField(
+                            controller: _sizeController,
+                            keyboardType: TextInputType.number,
+                            decoration: InputDecoration(
+                              hintText: 'Tamaño de la actualización (GB)',
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                    actions: <Widget>[
+                      TextButton(
+                        onPressed: () {
+                          Navigator.of(context).pop();
+                        },
+                        child: Text('Cancelar'),
+                      ),
+                      TextButton(
+                        onPressed: () {
+                          String version = _versionController.text;
+                          int size = int.tryParse(_sizeController.text) ?? 0;
+                          String result = prog.actualizar(version, size);
+                          ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                            content: Text(result),
+                            backgroundColor: Color.fromARGB(255, 100, 95, 255),
+                          ));
+                          setState(() {});
+                          Navigator.of(context).pop();
+                        },
+                        child: Text('Actualizar'),
+                      ),
+                    ],
+                  );
+                },
+              );
+            },
           ),
           SizedBox(width: 20.0),
           IconButton(

@@ -9,7 +9,7 @@ class MaquinaVirtual extends Programa {
 
   @override
   String mostrar() {
-    return "Máquina virtual $version $size GB libres\n";
+    return "Máquina virtual $so $version $size GB libres\n";
   }
 
   @override
@@ -33,12 +33,12 @@ class MaquinaVirtual extends Programa {
 
   @override
   String ejecutar() {
-    return "Ejecutando máquina virtual $version";
+    return "Ejecutando máquina virtual $so $version";
   }
 
   @override
   String detener() {
-    return "Deteniendo máquina virtual $version";
+    return "Deteniendo máquina virtual $so $version";
   }
 
   @override
@@ -62,7 +62,7 @@ class MaquinaVirtual extends Programa {
     else {
       this.version = version;
       this.size -= tamActu;
-      return "Actualización de tamaño $tamActu completada: $version $size GB libres";
+      return "Actualización de tamaño $tamActu completada: $so $version $size GB libres";
     }
   }
 

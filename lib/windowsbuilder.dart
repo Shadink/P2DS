@@ -9,7 +9,7 @@ class WindowsBuilder extends MVBuilder{
 
   @override
   void addVersion(){
-    mv.version = "Windows 11";
+    mv.version = "11";
   }
 
   @override

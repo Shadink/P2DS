@@ -9,7 +9,7 @@ class LinuxBuilder extends MVBuilder{
 
   @override
   void addVersion(){
-    mv.version = "Ubuntu 22";
+    mv.version = "22";
   }
 
   @override

@@ -1,5 +1,3 @@
-// ignore_for_file: prefer_const_literals_to_create_immutables, prefer_const_constructors
-
 import 'dart:collection';
 
 import 'package:flutter/material.dart';
@@ -87,7 +85,7 @@ class _MyHomePageState extends State<MyHomePage> {
                         ),
                       ),
                     ),
-                    SizedBox(width: 10.0), // Espacio entre el campo de texto y el botón
+                    SizedBox(width: 10.0),
                     ElevatedButton(
                       onPressed: () {
                         if (_controller.text.isNotEmpty) {
@@ -168,7 +166,7 @@ class _MyHomePageState extends State<MyHomePage> {
                                   ),
                                 ),
                               ),
-                              SizedBox(width: 10.0), // Espacio entre el campo de texto y el botón
+                              SizedBox(width: 10.0),
                               ElevatedButton(
                                 onPressed: () {
                                   if (_controller.text.isNotEmpty) {

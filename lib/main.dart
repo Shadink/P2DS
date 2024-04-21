@@ -45,96 +45,75 @@ class _MyHomePageState extends State<MyHomePage> {
   late Programa p;
   List<Programa> root = [];
   TextEditingController _controller = TextEditingController();
-  Map<Programa, GlobalKey> clavesProgramas = {};
 
-  void borrarProgramaYHijos(Programa programa) {
-    // Eliminar el programa y su clave asociada
-    root.remove(programa);
-    clavesProgramas.remove(programa);
-
-    // Eliminar los widgets hijos y sus claves asociadas recursivamente
-    for (var hijo in programa.hijos) {
-      borrarProgramaYHijos(hijo);
-    }
-  }
-
-  Widget filaBotones(Programa prog, int tab, GlobalKey key) {
-    String t = '';
-    for (int i = 0; i < tab; i++) t += '\t';
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        Row(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Expanded(
-              child: Text(t + prog.mostrar()),
-            ),
-            ElevatedButton(
-              onPressed: () {
-                if (_controller.text.isNotEmpty) {
-                  p = ProgramaNormal(_controller.text);
-                  setState(() {
-                    prog.agregar(p);
-                    _controller.clear();
-                  });
-                }
-              },
-              child: Text(
-                'Agregar Programa',
-                style: const TextStyle(
-                  color: Color.fromARGB(255, 0, 38, 255),
-                ),
+  Widget filaBotones(Programa prog, int tab, Programa padre) {
+  String t = '';
+  for (int i=0 ; i<tab ; i++) t += '\t';
+  return Column(
+    crossAxisAlignment: CrossAxisAlignment.start,
+    children: [
+      Row(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Expanded(
+            child: Text(t + prog.mostrar()),
+          ),
+          ElevatedButton(
+            onPressed: () {
+              if (_controller.text.isNotEmpty) {
+                p = ProgramaNormal(_controller.text);
+                setState(() {
+                  prog.agregar(p);
+                  _controller.clear();
+                });
+              }
+            },
+            child: Text(
+              'Agregar Programa',
+              style: const TextStyle(
+                color: Color.fromARGB(255, 0, 38, 255),
               ),
             ),
-            SizedBox(width: 20.0),
-            ElevatedButton(
-              onPressed: () {
-                setState(() {
-                  var maquinaLinux = _directorl.build_mv();
-                  clavesProgramas.putIfAbsent(maquinaLinux, () => GlobalKey());
-
-                  prog.agregar(maquinaLinux);
-                });
-              },
-              child: Text('Agregar Linux'),
-            ),
-            SizedBox(width: 20.0),
-            ElevatedButton(
-              onPressed: () {
-                setState(() {
-                  var maquinaWindows = _directorw.build_mv();
-                  clavesProgramas.putIfAbsent(
-                      maquinaWindows, () => GlobalKey());
-
-                  prog.agregar(maquinaWindows);
-                });
-              },
-              child: Text('Agregar Windows'),
-            ),
-            SizedBox(width: 20.0),
-            IconButton(
-              icon: Icon(Icons.delete),
-              onPressed: () {
-                setState(() {
-                  borrarProgramaYHijos(prog);
-                });
-              },
-            ),
-          ],
-        ),
-        if (prog.hijos.isNotEmpty)
-          Column(
-            children: prog.hijos.map((childProg) {
-              clavesProgramas.putIfAbsent(childProg, () => GlobalKey());
-
-              return filaBotones(
-                  childProg, tab + 2, clavesProgramas[childProg]!);
-            }).toList(),
           ),
-      ],
-    );
-  }
+          SizedBox(width: 20.0),
+          ElevatedButton(
+            onPressed: () {
+              setState(() {
+                prog.agregar(_directorl.build_mv());
+              });
+            },
+            child: Text('Agregar Linux'),
+          ),
+          SizedBox(width: 20.0),
+          ElevatedButton(
+            onPressed: () {
+              setState(() {
+                prog.agregar(_directorw.build_mv());
+              });
+            },
+            child: Text('Agregar Windows'),
+          ),
+          SizedBox(width: 20.0),
+          IconButton(
+            icon: Icon(Icons.delete),
+            onPressed: () {
+              setState(() {
+                if (padre == prog)
+                  root.removeAt(root.indexOf(prog));
+                else
+                  padre.quitar(prog);
+              });
+            },
+          ),
+        ],
+      ),
+      if (prog.hijos.isNotEmpty)
+        Column(
+          children: prog.hijos.map((childProg) => filaBotones(childProg, tab+2, prog)).toList(),
+        ),
+    ],
+  );
+}
 
   @override
   Widget build(BuildContext context) {
@@ -167,8 +146,6 @@ class _MyHomePageState extends State<MyHomePage> {
                             if (nombre.isNotEmpty) {
                               p = ProgramaNormal(nombre);
                               setState(() {
-                                clavesProgramas.putIfAbsent(
-                                    p, () => GlobalKey());
                                 root.add(p);
                                 _controller.clear();
                               });
@@ -191,7 +168,6 @@ class _MyHomePageState extends State<MyHomePage> {
                     if (_controller.text.isNotEmpty) {
                       p = ProgramaNormal(_controller.text);
                       setState(() {
-                        clavesProgramas.putIfAbsent(p, () => GlobalKey());
                         root.add(p);
                         _controller.clear();
                       });
@@ -208,11 +184,7 @@ class _MyHomePageState extends State<MyHomePage> {
                 ElevatedButton(
                   onPressed: () {
                     setState(() {
-                      var maquinaLinux = _directorl.build_mv();
-                      root.add(
-                          maquinaLinux); // Agregar la máquina virtual Linux a la lista root
-                      clavesProgramas.putIfAbsent(
-                          maquinaLinux, () => GlobalKey());
+                      root.add(_directorl.build_mv());
                     });
                   },
                   child: Text('Agregar Máquina Virtual Linux'),
@@ -221,11 +193,7 @@ class _MyHomePageState extends State<MyHomePage> {
                 ElevatedButton(
                   onPressed: () {
                     setState(() {
-                      var maquinaWindows = _directorw.build_mv();
-                      root.add(
-                          maquinaWindows); // Agregar la máquina virtual Windows a la lista root
-                      clavesProgramas.putIfAbsent(
-                          maquinaWindows, () => GlobalKey());
+                      root.add(_directorw.build_mv());
                     });
                   },
                   child: Text('Agregar Máquina Virtual Windows'),
@@ -237,15 +205,10 @@ class _MyHomePageState extends State<MyHomePage> {
               child: ListView.builder(
                 itemCount: root.length,
                 itemBuilder: (context, index) {
-                  Programa programaActual = root[index];
-
-                  clavesProgramas.putIfAbsent(
-                      programaActual, () => GlobalKey());
                   return Container(
                     color: index.isEven ? Colors.grey.shade200 : null,
                     child: ListTile(
-                      title: filaBotones(
-                          root[index], 2, clavesProgramas[programaActual]!),
+                      title: filaBotones(root[index], 2, root[index]),
                     ),
                   );
                 },

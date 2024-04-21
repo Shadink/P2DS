@@ -3,12 +3,12 @@ abstract class Programa {
 
     String mostrar();
     void agregar(Programa n);
-    void quitar(int i);
+    void quitar(Programa n);
     Programa obtener(int i);
     String ejecutar();
     String detener();
     Programa duplicar();
-    void actualizar(String version, int tamActu);
+    String actualizar(String version, int tamActu);
     void duplicar_programa(int i);
     
 }

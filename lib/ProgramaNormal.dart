@@ -1,5 +1,4 @@
 import 'programa.dart';
-import 'package:deepcopy/deepcopy.dart';
 
 class ProgramaNormal extends Programa {
     String nombre;
@@ -17,13 +16,13 @@ class ProgramaNormal extends Programa {
     }
 
     @override
-    void quitar(int i) {
+    void quitar(Programa n) {
         // Sin funcionalidad adicional
     }
 
     @override
     Programa obtener(int i) {
-        // Sin funcionalidad adicional
+        return this;
     }
 
     @override
@@ -38,13 +37,13 @@ class ProgramaNormal extends Programa {
 
     @override
     Programa duplicar() {
-        ProgamaNormal copia = deepcopy(this);
+        Programa copia = ProgramaNormal(this.nombre);
         return copia;
     }
 
     @override
-    void actualizar(String version, int tamActu) {
-        // Sin funcionalidad adicional
+    String actualizar(String version, int tamActu) {
+        return 'Programa normal no se actualiza\n';
     }
 
     @override

@@ -48,6 +48,88 @@ class _MyHomePageState extends State<MyHomePage> {
   TextEditingController _versionController = TextEditingController();
   TextEditingController _sizeController = TextEditingController();
 
+  void borrar(Programa prog, Programa padre) {
+    if (padre == prog)
+      root.removeAt(root.indexOf(prog));
+    else
+      padre.quitar(prog);
+  }
+
+  void agregarProgramaRoot(String nombre) {
+    if (nombre.isNotEmpty) {
+      p = ProgramaNormal(nombre);
+      setState(() {
+        root.add(p);
+        _controller.clear();
+      });
+    }
+  }
+
+  void agregarProgramaMV(Programa prog, String nombre) {
+    if (nombre.isNotEmpty) {
+      p = ProgramaNormal(nombre);
+      setState(() {
+        prog.agregar(p);
+        _controller.clear();
+      });
+    }
+  }
+
+  AlertDialog dialogoActualizacion(Programa prog) {
+    return AlertDialog(
+      title: Text('Actualizar Máquina Virtual'),
+      content: SingleChildScrollView(
+        child: ListBody(
+          children: <Widget>[
+            Text('Versión:'),
+            TextField(
+              controller: _versionController,
+              keyboardType: TextInputType.text,
+              decoration: InputDecoration(
+                hintText: 'Versión',
+              ),
+            ),
+            SizedBox(height: 10),
+            Text('Tamaño en GB:'),
+            TextField(
+              controller: _sizeController,
+              keyboardType: TextInputType.number,
+              decoration: InputDecoration(
+                hintText: 'Tamaño de la actualización (GB)',
+              ),
+            ),
+          ],
+        ),
+      ),
+      actions: <Widget>[
+        TextButton(
+          onPressed: () {
+            Navigator.of(context).pop();
+          },
+          child: Text('Cancelar'),
+        ),
+        TextButton(
+          onPressed: () {
+            actualizar(prog);
+          },
+          child: Text('Actualizar'),
+        ),
+      ],
+    );
+  }
+
+  void actualizar(Programa prog) {
+    String version = _versionController.text;
+    int size = int.tryParse(_sizeController.text) ?? 0;
+    String result = prog.actualizar(version, size);
+    ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+      content: Text(result, style: TextStyle(color: Colors.black),),
+      backgroundColor: Color.fromARGB(255, 194, 220, 255),
+    ));
+    setState(() {});
+    Navigator.of(context).pop();
+  }
+
   Widget filaBotones(Programa prog, int tab, Programa padre) {
   String t = '';
   for (int i=0 ; i<tab ; i++) t += '\t';
@@ -60,13 +142,7 @@ class _MyHomePageState extends State<MyHomePage> {
           ),
           ElevatedButton(
             onPressed: () {
-              if (_controller.text.isNotEmpty) {
-                p = ProgramaNormal(_controller.text);
-                setState(() {
-                  prog.agregar(p);
-                  _controller.clear();
-                });
-              }
+              agregarProgramaMV(prog, _controller.text);
             },
             child: Text(
               'Agregar Programa',
@@ -100,54 +176,7 @@ class _MyHomePageState extends State<MyHomePage> {
               showDialog(
                 context: context,
                 builder: (BuildContext context) {
-                  return AlertDialog(
-                    title: Text('Actualizar Máquina Virtual'),
-                    content: SingleChildScrollView(
-                      child: ListBody(
-                        children: <Widget>[
-                          Text('Versión:'),
-                          TextField(
-                            controller: _versionController,
-                            keyboardType: TextInputType.text,
-                            decoration: InputDecoration(
-                              hintText: 'Versión',
-                            ),
-                          ),
-                          SizedBox(height: 10),
-                          Text('Tamaño en GB:'),
-                          TextField(
-                            controller: _sizeController,
-                            keyboardType: TextInputType.number,
-                            decoration: InputDecoration(
-                              hintText: 'Tamaño de la actualización (GB)',
-                            ),
-                          ),
-                        ],
-                      ),
-                    ),
-                    actions: <Widget>[
-                      TextButton(
-                        onPressed: () {
-                          Navigator.of(context).pop();
-                        },
-                        child: Text('Cancelar'),
-                      ),
-                      TextButton(
-                        onPressed: () {
-                          String version = _versionController.text;
-                          int size = int.tryParse(_sizeController.text) ?? 0;
-                          String result = prog.actualizar(version, size);
-                          ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-                            content: Text(result, style: TextStyle(color: Colors.black),),
-                            backgroundColor: Color.fromARGB(255, 194, 220, 255),
-                          ));
-                          setState(() {});
-                          Navigator.of(context).pop();
-                        },
-                        child: Text('Actualizar'),
-                      ),
-                    ],
-                  );
+                  return dialogoActualizacion(prog);
                 },
               );
             },
@@ -157,10 +186,7 @@ class _MyHomePageState extends State<MyHomePage> {
             icon: Icon(Icons.delete),
             onPressed: () {
               setState(() {
-                if (padre == prog)
-                  root.removeAt(root.indexOf(prog));
-                else
-                  padre.quitar(prog);
+                borrar(prog, padre);
               });
             },
           ),
@@ -202,13 +228,7 @@ class _MyHomePageState extends State<MyHomePage> {
                             ),
                           ),
                           onSubmitted: (String nombre) {
-                            if (nombre.isNotEmpty) {
-                              p = ProgramaNormal(nombre);
-                              setState(() {
-                                root.add(p);
-                                _controller.clear();
-                              });
-                            }
+                            agregarProgramaRoot(nombre);
                           },
                         ),
                       ),
@@ -224,13 +244,7 @@ class _MyHomePageState extends State<MyHomePage> {
               children: [
                 ElevatedButton(
                   onPressed: () {
-                    if (_controller.text.isNotEmpty) {
-                      p = ProgramaNormal(_controller.text);
-                      setState(() {
-                        root.add(p);
-                        _controller.clear();
-                      });
-                    }
+                    agregarProgramaRoot(_controller.text);
                   },
                   child: Text(
                     'Agregar Programa',

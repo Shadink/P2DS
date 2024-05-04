@@ -24,7 +24,9 @@ class MaquinaVirtual extends Programa {
 
   @override
   Programa obtener(int i) {
-    if (i < hijos.length)
+    if (i < 0)
+      return hijos[0];
+    else if (i < hijos.length)
       return hijos[i];
     else {
       return hijos[hijos.length - 1];
@@ -42,19 +44,6 @@ class MaquinaVirtual extends Programa {
   }
 
   @override
-  Programa duplicar() {
-    MaquinaVirtual copia = MaquinaVirtual();
-    copia.hijos = [];
-    copia.size = size;
-    copia.so = so;
-    copia.version = version;
-    for (Programa p in this.hijos) {
-      copia.hijos.add(p.duplicar());
-    }
-    return copia;
-  }
-
-  @override
   String actualizar(String version, int tamActu) {
     if (this.size - tamActu < 0) {
       return "No hay suficiente espacio en la máquina virtual para la actualización";
@@ -67,8 +56,20 @@ class MaquinaVirtual extends Programa {
   }
 
   @override
+  Programa duplicar() {
+    MaquinaVirtual copia = MaquinaVirtual();
+    copia.size = size;
+    copia.so = so;
+    copia.version = version;
+    for (Programa p in this.hijos) {
+      copia.hijos.add(p.duplicar());
+    }
+    return copia;
+  }
+
+  @override
   void duplicar_programa(int i) {
-    if (i >= this.hijos.length) exit(1);
+    if (i >= this.hijos.length || i < 0) exit(1);
     Programa copia = this.hijos[i].duplicar();
     this.hijos.add(copia);
   }

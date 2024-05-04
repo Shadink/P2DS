@@ -12,17 +12,17 @@ class ProgramaNormal extends Programa {
 
     @override
     void agregar(Programa n) {
-        // Sin funcionalidad adicional
+      // Sin funcionalidad adicional
     }
 
     @override
     void quitar(Programa n) {
-        // Sin funcionalidad adicional
+      // Sin funcionalidad adicional
     }
 
     @override
     Programa obtener(int i) {
-        return this;
+      return this;
     }
 
     @override
@@ -36,14 +36,14 @@ class ProgramaNormal extends Programa {
     }
 
     @override
-    Programa duplicar() {
-        Programa copia = ProgramaNormal(this.nombre);
-        return copia;
+    String actualizar(String version, int tamActu) {
+      return 'Programa normal no se actualiza';
     }
 
     @override
-    String actualizar(String version, int tamActu) {
-        return 'Programa normal no se actualiza';
+    Programa duplicar() {
+        Programa copia = ProgramaNormal(this.nombre + " - copia");
+        return copia;
     }
 
     @override

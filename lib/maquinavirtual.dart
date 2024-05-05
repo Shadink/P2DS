@@ -1,6 +1,7 @@
 import 'dart:io';
 
 import 'programa.dart';
+import 'ProgramaNormal.dart';
 
 class MaquinaVirtual extends Programa {
   String so = "";
@@ -62,15 +63,16 @@ class MaquinaVirtual extends Programa {
     copia.so = so;
     copia.version = version;
     for (Programa p in this.hijos) {
-      copia.hijos.add(p.duplicar());
+      copia.hijos.add(p);
     }
     return copia;
   }
 
   @override
   void duplicar_programa(int i) {
-    if (i >= this.hijos.length || i < 0) exit(1);
-    Programa copia = this.hijos[i].duplicar();
-    this.hijos.add(copia);
+    if (i == 0 || (i > 0 && i < hijos.length-1)){
+      Programa copia = this.hijos[i];
+      this.hijos.add(copia);
+    }
   }
 }

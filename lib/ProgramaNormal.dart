@@ -51,5 +51,11 @@ class ProgramaNormal extends Programa {
         // Sin funcionalidad adicional
     }
 
+    @override
+    bool operator ==(Object other) {
+      if (identical(this, other)) return true;
+      return other is ProgramaNormal && other.nombre == nombre;
+    }
+
 }
 

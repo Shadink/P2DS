@@ -83,24 +83,26 @@ void main() {
 
     test('Duplicar una MV', () {
       Programa copia = mv_l.duplicar();
-      Programa p_copia = copia.obtener(1);
-      expect([mv_l.hijos, copia.hijos], [[p, p, mv_w], [p_copia, p_copia, mv_w]]);
+      expect([mv_l.hijos, copia.hijos], [[p, p, mv_w], [p, p, mv_w]]);
     });
 
     test('Duplicar una MV y que añadir y quitar programas a elemento de la copia no afecte a la original', () {
       Programa copia = mv_l.duplicar(); // hijos = [p, p, mv_w], mv_w vacía
-      Programa hijo = copia.obtener(2); // hijos = [p, p, mv_w], mv_w vacía
-      hijo.agregar(mv_l);
+      Programa hijo = copia.obtener(2);
+      hijo.agregar(mv_l); // hijos = [p, p, mv_w], mv_w con mv_l
       expect([mv_l.obtener(2).hijos, hijo.hijos], [[], [mv_l]]);
     });
-/*
-    test('Duplicar una MV y que actualizar la copia no afecte a la original', () {
-      String version = mv_l.version;
-      int tam = mv_l.size;
-      Programa copia = mv_l.duplicar();
-      (copia as MaquinaVirtual);
-      copia.actualizar("Versión Z", 1);
-      expect([[mv_l.version, mv_l.size], [copia.version, copia.size]], [[version, tam], ["Versión Z", tam-1]]);
+
+    test('Duplicar una MV y que actualizar elemento de la copia no afecte a la original', () {
+      Programa copia = mv_l.duplicar(); // hijos = [p, p, mv_w]
+      Programa mv_w = mv_l.obtener(2); // mv_w con version y tam
+      mv_w as MaquinaVirtual;
+      String version = mv_w.version;
+      int tam = mv_w.size;
+      Programa mv_w_copia = copia.obtener(2);
+      mv_w_copia as MaquinaVirtual;
+      mv_w_copia.actualizar("Versión Z", 1); // mv_w_copia con "Versión Z" y tam-1
+      expect([mv_w.version, mv_w.size, mv_w_copia.version, mv_w_copia.size], [version, tam, "Versión Z", tam-1]);
     });
 
     test('Duplicar un programa en MV introduciendo índice correcto', () {
@@ -113,7 +115,8 @@ void main() {
       mv_l.duplicar_programa(10);
       mv_l.duplicar_programa(-10);
       expect(mv_l.hijos, [p, p, mv_w, p, mv_w]);
-    });*/
+    });
+
   });
 
   group('Programa Normal', () {
@@ -139,7 +142,7 @@ void main() {
 
     test('Duplicar un Programa Normal', () {
       Programa copia = c.duplicar();
-      expect((copia as ProgramaNormal).nombre, "Programa c - copia");
+      expect((copia as ProgramaNormal), c);
     });
 
     test('Duplicar un programa de Programa Normal', () {

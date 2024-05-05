@@ -42,7 +42,7 @@ class ProgramaNormal extends Programa {
 
     @override
     Programa duplicar() {
-        Programa copia = ProgramaNormal(this.nombre + " - copia");
+        Programa copia = ProgramaNormal(this.nombre);
         return copia;
     }
 

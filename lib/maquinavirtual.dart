@@ -25,13 +25,12 @@ class MaquinaVirtual extends Programa {
 
   @override
   Programa obtener(int i) {
-    if (i < 0)
-      return hijos[0];
-    else if (i < hijos.length)
-      return hijos[i];
-    else {
-      return hijos[hijos.length - 1];
-    }
+    if (i <= 0)
+      i = 0;
+    else if (i > hijos.length-1)
+      i = hijos.length-1;
+    
+    return hijos[i];
   }
 
   @override
@@ -62,8 +61,10 @@ class MaquinaVirtual extends Programa {
     copia.size = size;
     copia.so = so;
     copia.version = version;
+    Programa hijo;
     for (Programa p in this.hijos) {
-      copia.hijos.add(p);
+      hijo = p.duplicar();
+      copia.hijos.add(hijo);
     }
     return copia;
   }
@@ -71,7 +72,7 @@ class MaquinaVirtual extends Programa {
   @override
   void duplicar_programa(int i) {
     if (i == 0 || (i > 0 && i < hijos.length-1)){
-      Programa copia = this.hijos[i];
+      Programa copia = this.hijos[i].duplicar();
       this.hijos.add(copia);
     }
   }

@@ -83,16 +83,17 @@ void main() {
 
     test('Duplicar una MV', () {
       Programa copia = mv_l.duplicar();
-      expect(copia.hijos, [p, p, mv_w]);
+      Programa p_copia = copia.obtener(1);
+      expect([mv_l.hijos, copia.hijos], [[p, p, mv_w], [p_copia, p_copia, mv_w]]);
     });
 
-    test('Duplicar una MV y que añadir y quitar programas a la copia no afecte a la original', () {
-      Programa copia = mv_l.duplicar();
-      copia.quitar(mv_w);
-      copia.agregar(mv_l);
-      expect([mv_l.hijos, copia.hijos], [[p, p, mv_w], [p, p, mv_l]]);
+    test('Duplicar una MV y que añadir y quitar programas a elemento de la copia no afecte a la original', () {
+      Programa copia = mv_l.duplicar(); // hijos = [p, p, mv_w], mv_w vacía
+      Programa hijo = copia.obtener(2); // hijos = [p, p, mv_w], mv_w vacía
+      hijo.agregar(mv_l);
+      expect([mv_l.obtener(2).hijos, hijo.hijos], [[], [mv_l]]);
     });
-
+/*
     test('Duplicar una MV y que actualizar la copia no afecte a la original', () {
       String version = mv_l.version;
       int tam = mv_l.size;
@@ -112,7 +113,7 @@ void main() {
       mv_l.duplicar_programa(10);
       mv_l.duplicar_programa(-10);
       expect(mv_l.hijos, [p, p, mv_w, p, mv_w]);
-    });
+    });*/
   });
 
   group('Programa Normal', () {

@@ -10,5 +10,4 @@ abstract class Programa {
     Programa duplicar();
     String actualizar(String version, int tamActu);
     void duplicar_programa(int i);
-    bool sonIguales(Programa otro);
 }

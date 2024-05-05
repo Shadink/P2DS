@@ -83,7 +83,8 @@ void main() {
 
     test('Duplicar una MV', () {
       Programa copia = mv_l.duplicar();
-      expect(mv_l.sonIguales(copia), true);
+      Programa p_copia = copia.obtener(1);
+      expect([mv_l.hijos, copia.hijos], [[p, p, mv_w], [p_copia, p_copia, mv_w]]);
     });
 
     test('Duplicar una MV y que añadir y quitar programas a elemento de la copia no afecte a la original', () {

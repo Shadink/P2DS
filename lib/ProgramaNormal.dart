@@ -51,14 +51,5 @@ class ProgramaNormal extends Programa {
         // Sin funcionalidad adicional
     }
 
-    @override
-    bool sonIguales (Programa otro) {
-      if (otro is ProgramaNormal) {
-        return otro.nombre == nombre || otro.nombre == "$nombre - copia";
-      }
-      else 
-        return false;
-    }
-
 }
 

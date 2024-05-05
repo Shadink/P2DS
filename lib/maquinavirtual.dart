@@ -76,17 +76,5 @@ class MaquinaVirtual extends Programa {
       this.hijos.add(copia);
     }
   }
-
-  @override
-  bool sonIguales (Programa otro) {
-      if (otro is MaquinaVirtual) {
-        bool iguales = true;
-        for (int i=0 ; i<hijos.length && iguales ; i++) {
-          iguales = hijos[i].sonIguales(otro.hijos[i]);
-        }
-        return iguales;
-      }
-      else 
-        return false;
-    }
+  
 }

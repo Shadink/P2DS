@@ -20,48 +20,54 @@ void main() {
     MaquinaVirtual mv_l = directorl.construir_MV();
     MaquinaVirtual mv_w = directorw.construir_MV();
     ProgramaNormal p = ProgramaNormal("Programa base");
-    mv_l.agregar(p);
-    mv_l.agregar(mv_w);
-
 
     test('Construir una MV', () {
       expect([[mv_l.so, mv_l.version, mv_l.size], [mv_w.so, mv_w.version, mv_w.size]], [["Ubuntu", "22", 32], ["Windows", "11", 64]]);
     });
     test('Agregar programa nuevo a MV', () {
-      mv_l.agregar(p);
-      expect(mv_l.hijos, [p]);
+      mv_l.hijos = [p, mv_w];
+      ProgramaNormal n = ProgramaNormal("Programa nuevo");
+      mv_l.agregar(n);
+      expect(mv_l.hijos, [p, mv_w, n]);
     });
 
     test('Agregar programa existente a MV', () {
+      mv_l.hijos = [p, mv_w];
       mv_l.agregar(p);
-      expect(mv_l.hijos, [p, p]);
+      expect(mv_l.hijos, [p, mv_w, p]);
     });
 
     test('Agregar mv nueva a MV', () {
-      mv_l.agregar(mv_w);
-      expect(mv_l.hijos, [p, p, mv_w]);
+      mv_l.hijos = [p, mv_w];
+      mv_l.agregar(mv_l);
+      expect(mv_l.hijos, [p, mv_w, mv_l]);
     });
 
     test('Agregar mv existente a MV', () {
+      mv_l.hijos = [p, mv_w];
       mv_l.agregar(mv_w);
-      expect(mv_l.hijos, [p, p, mv_w, mv_w]);
+      expect(mv_l.hijos, [p, mv_w, mv_w]);
     });
 
     test ('Quitar programa existente a MV', () {
+      mv_l.hijos = [p, mv_w];
       mv_l.quitar(mv_w);
-      expect(mv_l.hijos, [p, p, mv_w]);
+      expect(mv_l.hijos, [p]);
     });
 
     test ('Quitar programa inexistente a MV', () {
+      mv_l.hijos = [p, mv_w];
       mv_l.quitar(mv_l);
-      expect(mv_l.hijos, [p, p, mv_w]);
+      expect(mv_l.hijos, [p, mv_w]);
     });
 
     test ('Obtener programa de MV introduciendo índice correcto', () {
-      expect([mv_l.obtener(0), mv_l.obtener(1), mv_l.obtener(2)], [p, p, mv_w]);
+      mv_l.hijos = [p, mv_w];
+      expect([mv_l.obtener(0), mv_l.obtener(1)], [p, mv_w]);
     });
 
     test ('Obtener programa de MV introduciendo índice superior y negativo', () {
+      mv_l.hijos = [p, mv_w];
       expect([mv_l.obtener(10), mv_l.obtener(-10)], [mv_w, p]);
     });
 
@@ -85,38 +91,44 @@ void main() {
     });
 
     test('Duplicar una MV', () {
+      mv_l.hijos = [p, mv_w];
       Programa copia = mv_l.duplicar();
       expect(mv_l.sonIguales(copia), true);
     });
 
     test('Duplicar una MV y que añadir programas a la copia no afecte a la original', () {
-      Programa copia = mv_l.duplicar(); // hijos = [p, p, mv_w], mv_w vacía
-      copia.agregar(mv_l); // copia con [p, p, mv_w, mv_l]
+      mv_l.hijos = [p, mv_w]; // original con [p, mv_w]
+      Programa copia = mv_l.duplicar();
+      copia.agregar(mv_l); // copia con [p, mv_w, mv_l]
       expect(mv_l.sonIguales(copia), false);
     });
 
     test("Duplicar una MV y que añadir programas a elementos de la copia no afecte a la original", () {
-      Programa copia = mv_l.duplicar(); // hijos = [p, p, mv_w], mv_w vacía
-      copia.obtener(1).agregar(copia.obtener(0));
-      expect(copia.hijos, [for (Programa p in copia.hijos)  p]);
+      mv_l.hijos = [p, mv_w]; // original con [p, mv_w]
+      Programa copia = mv_l.duplicar(); // hijos = [p, mv_w], mv_w vacía
+      Programa hijo = copia.obtener(1); // mv_w de copia
+      hijo.agregar(mv_l); // mv_w con mv_l
+      expect(mv_l.sonIguales(copia), false);
     });
 
-    test('Duplicar una MV y que actualizar de la copia no afecte a la original', () {
-      Programa copia = mv_l.duplicar(); // hijos = [p, p, mv_w], mv_w vacía
+    test('Duplicar una MV y que actualizar la copia no afecte a la original', () {
+      Programa copia = mv_l.duplicar();
       copia.actualizar("Versión Z", 1);
       expect(mv_l.sonIguales(copia), false);
     });
 
     test('Duplicar un programa en MV introduciendo índice correcto', () {
-      Programa copia = mv_l.duplicar(); // hijos = [p, p, mv_w], mv_w vacía
-      copia.duplicar_programa(0);
-      expect(copia.hijos, [for (Programa p in copia.hijos)  p]);
+      mv_l.hijos = [p, mv_w];
+      mv_l.duplicar_programa(0);
+      mv_l.duplicar_programa(1);
+      expect([p.sonIguales(mv_l.obtener(2)), mv_w.sonIguales(mv_l.obtener(3))], [true, true]);
     });
 
-    test("Duplicar un programa en MV introduciendo índice superior", () {
-      Programa copia = mv_l.duplicar(); // hijos = [p, p, mv_w], mv_w vacía
-      copia.duplicar_programa(10);
-      expect(copia.hijos, [for (Programa p in copia.hijos)  p]);
+    test("Duplicar un programa en MV introduciendo índice superior y negativo", () {
+      mv_l.hijos = [p, mv_w];
+      mv_l.duplicar_programa(10);
+      mv_l.duplicar_programa(-10);
+      expect(mv_l.hijos, [p, mv_w]);
     });
   });
 
@@ -143,7 +155,7 @@ void main() {
 
     test('Duplicar un Programa Normal', () {
       Programa copia = c.duplicar();
-      expect((copia as ProgramaNormal), c);
+      expect(c.sonIguales(copia), true);
     });
 
     test('Duplicar un programa de Programa Normal', () {

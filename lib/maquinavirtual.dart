@@ -54,26 +54,30 @@ class MaquinaVirtual extends Programa {
       return "Actualización de tamaño $tamActu completada: $so $version $size GB libres";
     }
   }
-
+  
   @override
   Programa duplicar() {
     MaquinaVirtual copia = MaquinaVirtual();
     copia.size = size;
     copia.so = so;
     copia.version = version;
-    Programa hijo;
-    for (Programa p in this.hijos) {
-      hijo = p.duplicar();
-      copia.hijos.add(hijo);
+    
+    if (hijos.isNotEmpty) {
+      for (Programa p in hijos) {
+        Programa hijo = p.duplicar();
+        copia.agregar(hijo);
+      }
     }
+    
     return copia;
   }
 
+
   @override
   void duplicar_programa(int i) {
-    if (i == 0 || (i > 0 && i < hijos.length-1)){
+    if (i >= 0 && i < hijos.length-1){
       Programa copia = this.hijos[i].duplicar();
-      this.hijos.add(copia);
+      this.agregar(copia);
     }
   }
 

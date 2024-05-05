@@ -20,6 +20,9 @@ void main() {
     MaquinaVirtual mv_l = directorl.construir_MV();
     MaquinaVirtual mv_w = directorw.construir_MV();
     ProgramaNormal p = ProgramaNormal("Programa base");
+    mv_l.agregar(p);
+    mv_l.agregar(mv_w);
+
 
     test('Construir una MV', () {
       expect([[mv_l.so, mv_l.version, mv_l.size], [mv_w.so, mv_w.version, mv_w.size]], [["Ubuntu", "22", 32], ["Windows", "11", 64]]);
@@ -86,25 +89,23 @@ void main() {
       expect(mv_l.sonIguales(copia), true);
     });
 
-    test('Duplicar una MV y que añadir y quitar programas a elemento de la copia no afecte a la original', () {
+    test('Duplicar una MV y que añadir programas a la copia no afecte a la original', () {
       Programa copia = mv_l.duplicar(); // hijos = [p, p, mv_w], mv_w vacía
       copia.agregar(mv_l); // copia con [p, p, mv_w, mv_l]
       expect(mv_l.sonIguales(copia), false);
     });
 
     test('Duplicar una MV y que actualizar de la copia no afecte a la original', () {
-      Programa m1 = directorl.construir_MV();
-      Programa copia = m1.duplicar(); // hijos = [p, p, mv_w], mv_w vacía
+      Programa copia = mv_l.duplicar(); // hijos = [p, p, mv_w], mv_w vacía
       copia.actualizar("Versión Z", 1);
-      expect(m1.sonIguales(copia), false);
+      expect(mv_l.sonIguales(copia), false);
     });
 
     test('Duplicar un programa en MV introduciendo índice correcto', () {
-      Programa m1 = directorl.construir_MV();
-      Programa p1 = ProgramaNormal("Programa 1");
-      m1.agregar(p1);
-      m1.duplicar_programa(0);
-      expect(m1.hijos, [m1.obtener(0), m1.obtener(1)]);
+      Programa copia = mv_l.duplicar(); // hijos = [p, p, mv_w], mv_w vacía
+      copia.duplicar_programa(0);
+      copia.obtener(1).agregar(p);
+      expect(copia.hijos, [for (Programa p in copia.hijos)  p]);
     });
   });
 

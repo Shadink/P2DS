@@ -52,9 +52,12 @@ class ProgramaNormal extends Programa {
     }
 
     @override
-    bool operator ==(Object other) {
-      if (identical(this, other)) return true;
-      return other is ProgramaNormal && other.nombre == nombre;
+    bool sonIguales (Programa otro) {
+      if (otro is ProgramaNormal) {
+        return otro.nombre == nombre || otro.nombre == "$nombre - copia";
+      }
+      else 
+        return false;
     }
 
 }

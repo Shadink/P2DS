@@ -95,6 +95,12 @@ void main() {
       expect(mv_l.sonIguales(copia), false);
     });
 
+    test("Duplicar una MV y que añadir programas a elementos de la copia no afecte a la original", () {
+      Programa copia = mv_l.duplicar(); // hijos = [p, p, mv_w], mv_w vacía
+      copia.obtener(1).agregar(copia.obtener(0));
+      expect(copia.hijos, [for (Programa p in copia.hijos)  p]);
+    });
+
     test('Duplicar una MV y que actualizar de la copia no afecte a la original', () {
       Programa copia = mv_l.duplicar(); // hijos = [p, p, mv_w], mv_w vacía
       copia.actualizar("Versión Z", 1);
@@ -104,7 +110,12 @@ void main() {
     test('Duplicar un programa en MV introduciendo índice correcto', () {
       Programa copia = mv_l.duplicar(); // hijos = [p, p, mv_w], mv_w vacía
       copia.duplicar_programa(0);
-      copia.obtener(1).agregar(p);
+      expect(copia.hijos, [for (Programa p in copia.hijos)  p]);
+    });
+
+    test("Duplicar un programa en MV introduciendo índice superior", () {
+      Programa copia = mv_l.duplicar(); // hijos = [p, p, mv_w], mv_w vacía
+      copia.duplicar_programa(10);
       expect(copia.hijos, [for (Programa p in copia.hijos)  p]);
     });
   });

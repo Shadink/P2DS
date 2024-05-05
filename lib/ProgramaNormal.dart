@@ -51,5 +51,14 @@ class ProgramaNormal extends Programa {
         // Sin funcionalidad adicional
     }
 
+    @override
+    bool sonIguales(Programa p) {
+        if (p is ProgramaNormal) {
+            ProgramaNormal pn = p as ProgramaNormal;
+            return this.nombre == pn.nombre;
+        }
+        return false;
+    }
+
 }
 

@@ -1,7 +1,7 @@
 import 'dart:io';
 
 import 'programa.dart';
-import 'ProgramaNormal.dart';
+import 'programaNormal.dart';
 
 class MaquinaVirtual extends Programa {
   String so = "";
@@ -75,6 +75,28 @@ class MaquinaVirtual extends Programa {
       Programa copia = this.hijos[i].duplicar();
       this.hijos.add(copia);
     }
+  }
+
+  @override
+  bool sonIguales(Programa p) {
+     bool iguales = false;
+    if (p is MaquinaVirtual) {
+      MaquinaVirtual mv = p as MaquinaVirtual;
+      if (this.so == mv.so && this.version == mv.version && this.size == mv.size) {
+        iguales = true;
+        if(this.hijos.length != mv.hijos.length) {
+          iguales = false;
+        }else {
+          for (int i = 0; i < hijos.length; i++) {
+            if (!this.hijos[i].sonIguales(mv.hijos[i])) {
+              iguales = false;     
+              break;       
+            }
+          }
+        }
+      }
+    }
+    return iguales;
   }
   
 }

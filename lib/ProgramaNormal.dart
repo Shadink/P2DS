@@ -63,12 +63,7 @@ class ProgramaNormal extends Programa {
     return false;
   }
 
-  factory ProgramaNormal.fromJson(Map<String, dynamic> json) {
-    return ProgramaNormal(
-        nombre: json['nombre'] as String?,
-        id: json['id'] as int?,
-        usuario: json['usuario']);
-  }
+
 
   Map<String, dynamic> toJson() {
     return {if (id != null) 'id': id, 'nombre': nombre, 'usuario': usuario};

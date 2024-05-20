@@ -4,10 +4,13 @@ import 'programa.dart';
 import 'programaNormal.dart';
 
 class MaquinaVirtual extends Programa {
-  String so = "";
-  String version = "";
-  int size = 0;
+  String? so = "";
+  String? version = "";
+  int? size = 0;
+  String? usuario;
+  int? id;
 
+  MaquinaVirtual({this.id, this.so, this.version, this.size, this.usuario});
   @override
   String mostrar() {
     return "Máquina virtual $so $version $size GB libres\n";
@@ -27,9 +30,8 @@ class MaquinaVirtual extends Programa {
   Programa obtener(int i) {
     if (i <= 0)
       i = 0;
-    else if (i > hijos.length-1)
-      i = hijos.length-1;
-    
+    else if (i > hijos.length - 1) i = hijos.length - 1;
+
     return hijos[i];
   }
 
@@ -45,37 +47,35 @@ class MaquinaVirtual extends Programa {
 
   @override
   String actualizar(String version, int tamActu) {
-    if (this.size - tamActu < 0) {
+    if ((this.size ?? 0) - tamActu < 0) {
       return "No hay suficiente espacio en la máquina virtual para la actualización";
-    }
-    else {
+    } else {
       this.version = version;
-      this.size -= tamActu;
+      this.size = (this.size ?? 0) - tamActu;
       return "Actualización de tamaño $tamActu completada: $so $version $size GB libres";
     }
   }
-  
+
   @override
   Programa duplicar() {
     MaquinaVirtual copia = MaquinaVirtual();
     copia.size = size;
     copia.so = so;
     copia.version = version;
-    
+
     if (hijos.isNotEmpty) {
       for (Programa p in hijos) {
         Programa hijo = p.duplicar();
         copia.agregar(hijo);
       }
     }
-    
+
     return copia;
   }
 
-
   @override
   void duplicar_programa(int i) {
-    if (i >= 0 && i < hijos.length-1){
+    if (i >= 0 && i < hijos.length - 1) {
       Programa copia = this.hijos[i].duplicar();
       this.agregar(copia);
     }
@@ -83,18 +83,20 @@ class MaquinaVirtual extends Programa {
 
   @override
   bool sonIguales(Programa p) {
-     bool iguales = false;
+    bool iguales = false;
     if (p is MaquinaVirtual) {
       MaquinaVirtual mv = p as MaquinaVirtual;
-      if (this.so == mv.so && this.version == mv.version && this.size == mv.size) {
+      if (this.so == mv.so &&
+          this.version == mv.version &&
+          this.size == mv.size) {
         iguales = true;
-        if(this.hijos.length != mv.hijos.length) {
+        if (this.hijos.length != mv.hijos.length) {
           iguales = false;
-        }else {
+        } else {
           for (int i = 0; i < hijos.length; i++) {
             if (!this.hijos[i].sonIguales(mv.hijos[i])) {
-              iguales = false;     
-              break;       
+              iguales = false;
+              break;
             }
           }
         }
@@ -102,5 +104,22 @@ class MaquinaVirtual extends Programa {
     }
     return iguales;
   }
-  
+
+  factory MaquinaVirtual.fromJson(Map<String, dynamic> json) {
+    return MaquinaVirtual(
+        so: json['so'] as String?,
+        version: json['version'] as String?,
+        size: json['size'] as int?,
+        usuario: json['usuario'] as String?);
+  }
+
+  Map<String, dynamic> toJson() {
+    return {
+      if (id != null) 'id': id,
+      'so': so,
+      'version': version,
+      'size': size,
+      'usuario': usuario
+    };
+  }
 }

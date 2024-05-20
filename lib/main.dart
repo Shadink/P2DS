@@ -48,6 +48,21 @@ class _MyHomePageState extends State<MyHomePage> {
   TextEditingController _versionController = TextEditingController();
   TextEditingController _sizeController = TextEditingController();
 
+  String currentUser = "";
+  List<String> users = ["Daniel", "Carlos", "Lorena", "Mario"];
+
+  @override
+  void initState() {
+    super.initState();
+    cargarProgramasIniciales();
+  }
+
+  void cargarProgramasIniciales() async {
+    try {} catch (e) {
+      print("Error");
+    }
+  }
+
   void borrar(Programa prog, Programa padre) {
     if (padre == prog)
       root.removeAt(root.indexOf(prog));
@@ -75,130 +90,135 @@ class _MyHomePageState extends State<MyHomePage> {
     }
   }
 
-  AlertDialog dialogoActualizacion(Programa prog) {
-    return AlertDialog(
-      title: Text('Actualizar Máquina Virtual'),
-      content: SingleChildScrollView(
-        child: ListBody(
-          children: <Widget>[
-            Text('Versión:'),
-            TextField(
-              controller: _versionController,
-              keyboardType: TextInputType.text,
-              decoration: InputDecoration(
-                hintText: 'Versión',
+  // AlertDialog dialogoActualizacion(Programa prog) {
+  //   return AlertDialog(
+  //     title: Text('Actualizar Máquina Virtual'),
+  //     content: SingleChildScrollView(
+  //       child: ListBody(
+  //         children: <Widget>[
+  //           Text('Versión:'),
+  //           TextField(
+  //             controller: _versionController,
+  //             keyboardType: TextInputType.text,
+  //             decoration: InputDecoration(
+  //               hintText: 'Versión',
+  //             ),
+  //           ),
+  //           SizedBox(height: 10),
+  //           Text('Tamaño en GB:'),
+  //           TextField(
+  //             controller: _sizeController,
+  //             keyboardType: TextInputType.number,
+  //             decoration: InputDecoration(
+  //               hintText: 'Tamaño de la actualización (GB)',
+  //             ),
+  //           ),
+  //         ],
+  //       ),
+  //     ),
+  //     actions: <Widget>[
+  //       TextButton(
+  //         onPressed: () {
+  //           Navigator.of(context).pop();
+  //         },
+  //         child: Text('Cancelar'),
+  //       ),
+  //       TextButton(
+  //         onPressed: () {
+  //           actualizar(prog);
+  //         },
+  //         child: Text('Actualizar'),
+  //       ),
+  //     ],
+  //   );
+  // }
+
+  // void actualizar(Programa prog) {
+  //   String version = _versionController.text;
+  //   int size = int.tryParse(_sizeController.text) ?? 0;
+  //   String result = prog.actualizar(version, size);
+  //   ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+  //     content: Text(
+  //       result,
+  //       style: TextStyle(color: Colors.black),
+  //     ),
+  //     backgroundColor: Color.fromARGB(255, 194, 220, 255),
+  //   ));
+  //   setState(() {});
+  //   Navigator.of(context).pop();
+  // }
+
+  Widget filaBotones(Programa prog, int tab, Programa padre) {
+    String t = '';
+    for (int i = 0; i < tab; i++) t += '\t';
+    return Column(
+      children: [
+        Row(
+          children: [
+            Expanded(
+              child: Text(t + prog.mostrar()),
+            ),
+            ElevatedButton(
+              onPressed: () {
+                agregarProgramaMV(prog, _controller.text);
+              },
+              child: Text(
+                'Agregar Programa',
+                style: const TextStyle(
+                  color: Color.fromARGB(255, 0, 38, 255),
+                ),
               ),
             ),
-            SizedBox(height: 10),
-            Text('Tamaño en GB:'),
-            TextField(
-              controller: _sizeController,
-              keyboardType: TextInputType.number,
-              decoration: InputDecoration(
-                hintText: 'Tamaño de la actualización (GB)',
-              ),
+            SizedBox(width: 20.0),
+            ElevatedButton(
+              onPressed: () {
+                setState(() {
+                  prog.agregar(_directorl.construir_MV());
+                });
+              },
+              child: Text('Agregar Linux'),
+            ),
+            SizedBox(width: 20.0),
+            ElevatedButton(
+              onPressed: () {
+                setState(() {
+                  prog.agregar(_directorw.construir_MV());
+                });
+              },
+              child: Text('Agregar Windows'),
+            ),
+            // SizedBox(width: 20.0),
+            // IconButton(
+            //   icon: Icon(Icons.update),
+            //   onPressed: () {
+            //     showDialog(
+            //       context: context,
+            //       builder: (BuildContext context) {
+            //         return dialogoActualizacion(prog);
+            //       },
+            //     );
+            //   },
+            // ),
+            SizedBox(width: 20.0),
+            IconButton(
+              icon: Icon(Icons.delete),
+              onPressed: () {
+                setState(() {
+                  borrar(prog, padre);
+                });
+              },
             ),
           ],
         ),
-      ),
-      actions: <Widget>[
-        TextButton(
-          onPressed: () {
-            Navigator.of(context).pop();
-          },
-          child: Text('Cancelar'),
-        ),
-        TextButton(
-          onPressed: () {
-            actualizar(prog);
-          },
-          child: Text('Actualizar'),
-        ),
+        if (prog.hijos.isNotEmpty)
+          Column(
+            children: prog.hijos
+                .map((childProg) => filaBotones(childProg, tab + 2, prog))
+                .toList(),
+          ),
       ],
     );
   }
-
-  void actualizar(Programa prog) {
-    String version = _versionController.text;
-    int size = int.tryParse(_sizeController.text) ?? 0;
-    String result = prog.actualizar(version, size);
-    ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-      content: Text(result, style: TextStyle(color: Colors.black),),
-      backgroundColor: Color.fromARGB(255, 194, 220, 255),
-    ));
-    setState(() {});
-    Navigator.of(context).pop();
-  }
-
-  Widget filaBotones(Programa prog, int tab, Programa padre) {
-  String t = '';
-  for (int i=0 ; i<tab ; i++) t += '\t';
-  return Column(
-    children: [
-      Row(
-        children: [
-          Expanded(
-            child: Text(t + prog.mostrar()),
-          ),
-          ElevatedButton(
-            onPressed: () {
-              agregarProgramaMV(prog, _controller.text);
-            },
-            child: Text(
-              'Agregar Programa',
-              style: const TextStyle(
-                color: Color.fromARGB(255, 0, 38, 255),
-              ),
-            ),
-          ),
-          SizedBox(width: 20.0),
-          ElevatedButton(
-            onPressed: () {
-              setState(() {
-                prog.agregar(_directorl.construir_MV());
-              });
-            },
-            child: Text('Agregar Linux'),
-          ),
-          SizedBox(width: 20.0),
-          ElevatedButton(
-            onPressed: () {
-              setState(() {
-                prog.agregar(_directorw.construir_MV());
-              });
-            },
-            child: Text('Agregar Windows'),
-          ),
-          SizedBox(width: 20.0),
-          IconButton(
-            icon: Icon(Icons.update),
-            onPressed: () {
-              showDialog(
-                context: context,
-                builder: (BuildContext context) {
-                  return dialogoActualizacion(prog);
-                },
-              );
-            },
-          ),
-          SizedBox(width: 20.0),
-          IconButton(
-            icon: Icon(Icons.delete),
-            onPressed: () {
-              setState(() {
-                borrar(prog, padre);
-              });
-            },
-          ),
-        ],
-      ),
-      if (prog.hijos.isNotEmpty)
-        Column(
-          children: prog.hijos.map((childProg) => filaBotones(childProg, tab+2, prog)).toList(),
-        ),
-    ],
-  );
-}
 
   @override
   Widget build(BuildContext context) {

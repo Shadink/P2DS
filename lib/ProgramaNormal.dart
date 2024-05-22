@@ -5,7 +5,11 @@ class ProgramaNormal extends Programa {
   int? id;
   String? usuario;
 
-  ProgramaNormal({this.nombre, this.id, this.usuario});
+  ProgramaNormal(String? nombre, int? id, String? usuario) {
+    this.nombre = nombre;
+    this.id = id;
+    this.usuario = usuario;
+  }
 
   @override
   String mostrar() {
@@ -45,7 +49,7 @@ class ProgramaNormal extends Programa {
   @override
   Programa duplicar() {
     // Devuelve el mismo id. No deberia. Haz algo.
-    Programa copia = ProgramaNormal(nombre: nombre, id: id);
+    Programa copia = ProgramaNormal(nombre, id, usuario);
     return copia;
   }
 
@@ -65,9 +69,7 @@ class ProgramaNormal extends Programa {
 
   factory ProgramaNormal.fromJson(Map<String, dynamic> json) {
     return ProgramaNormal(
-        nombre: json['nombre'] as String?,
-        id: json['id'] as int?,
-        usuario: json['usuario']);
+        json['nombre'] as String?, json['id'] as int?, json['usuario']);
   }
 
   Map<String, dynamic> toJson() {

@@ -1,7 +1,9 @@
 import 'dart:convert';
 
+import 'package:ejgrupal/Programa.dart';
+
 import 'maquinavirtual.dart';
-import 'programa.dart';
+import 'Programa.dart';
 import 'package:http/http.dart' as http;
 
 class Sesion {

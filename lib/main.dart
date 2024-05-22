@@ -70,9 +70,9 @@ class _MyHomePageState extends State<MyHomePage> {
       padre.quitar(prog);
   }
 
-  void agregarProgramaRoot(String nombre) {
-    if (nombre.isNotEmpty) {
-      p = ProgramaNormal(nombre);
+  void agregarProgramaRoot(String? nombre) {
+    if (nombre!.isNotEmpty) {
+      p = ProgramaNormal(nombre: nombre, id: 0, usuario: "");
       setState(() {
         root.add(p);
         _controller.clear();
@@ -82,7 +82,7 @@ class _MyHomePageState extends State<MyHomePage> {
 
   void agregarProgramaMV(Programa prog, String nombre) {
     if (nombre.isNotEmpty) {
-      p = ProgramaNormal(nombre);
+      p = ProgramaNormal(nombre: nombre, id: 0, usuario: "");
       setState(() {
         prog.agregar(p);
         _controller.clear();

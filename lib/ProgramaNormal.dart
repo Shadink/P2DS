@@ -1,11 +1,11 @@
-import 'programa.dart';
+import 'Programa.dart';
 
 class ProgramaNormal extends Programa {
   String? nombre;
-  int? id;
-  String? usuario;
+  int id = 0;
+  String usuario = "";
 
-  ProgramaNormal(String? nombre, int? id, String? usuario) {
+  ProgramaNormal(String? nombre, int id, String usuario) {
     this.nombre = nombre;
     this.id = id;
     this.usuario = usuario;
@@ -68,8 +68,8 @@ class ProgramaNormal extends Programa {
   }
 
   factory ProgramaNormal.fromJson(Map<String, dynamic> json) {
-    return ProgramaNormal(
-        json['nombre'] as String?, json['id'] as int?, json['usuario']);
+    return ProgramaNormal(json['nombre'] as String?, json['id'] as int,
+        json['usuario'] as String);
   }
 
   Map<String, dynamic> toJson() {

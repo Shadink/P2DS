@@ -1,6 +1,6 @@
 import 'dart:convert';
 
-import 'package:ejgrupal/Programa.dart';
+import 'Programa.dart';
 
 import 'maquinavirtual.dart';
 import 'Programa.dart';
@@ -10,7 +10,11 @@ class Sesion {
   List<Programa> root = [];
   final String apiUrl = "http://localhost:3000/programas";
 
-  Sesion(this.root);
+  Sesion();
+
+  int tamanio() {
+    return root.length;
+  }
 
   Future<void> cargarPrograma(String usuario) async {
     final response = await http.get(Uri.parse('$apiUrl?usuario=$usuario'));
@@ -50,5 +54,9 @@ class Sesion {
     } else {
       throw Exception('Failed to delete task');
     }
+  }
+
+  Programa get(int i) {
+    return root[i];
   }
 }

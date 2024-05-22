@@ -1,16 +1,16 @@
 //import 'dart:io';
 
-import 'programa.dart';
-//import 'programaNormal.dart';
+import 'Programa.dart';
+import 'ProgramaNormal.dart';
 
 class MaquinaVirtual extends Programa {
   String? so = "";
   String? version = "";
   int? size = 0;
-  String? usuario;
-  int? id;
+  String usuario;
+  int id;
 
-  MaquinaVirtual({this.id, this.so, this.version, this.size, this.usuario});
+  MaquinaVirtual(this.id, this.so, this.version, this.size, this.usuario);
   @override
   String mostrar() {
     return "Máquina virtual $so $version $size GB libres\n";
@@ -58,7 +58,7 @@ class MaquinaVirtual extends Programa {
 
   @override
   Programa duplicar() {
-    MaquinaVirtual copia = MaquinaVirtual();
+    MaquinaVirtual copia = MaquinaVirtual(id, so, version, size, usuario);
     copia.size = size;
     copia.so = so;
     copia.version = version;
@@ -107,10 +107,11 @@ class MaquinaVirtual extends Programa {
 
   factory MaquinaVirtual.fromJson(Map<String, dynamic> json) {
     return MaquinaVirtual(
-        so: json['so'] as String?,
-        version: json['version'] as String?,
-        size: json['size'] as int?,
-        usuario: json['usuario'] as String?);
+        json['id'] as int,
+        json['so'] as String?,
+        json['version'] as String?,
+        json['size'] as int?,
+        json['usuario'] as String);
   }
 
   Map<String, dynamic> toJson() {

@@ -1,13 +1,14 @@
 import 'dart:collection';
 
+import 'sesion.dart';
 import 'package:flutter/material.dart';
 import 'director.dart';
 import 'mvbuilder.dart';
 import 'windowsbuilder.dart';
 import 'linuxbuilder.dart';
 import 'maquinavirtual.dart';
-import 'programa.dart';
-import 'programanormal.dart';
+import 'Programa.dart';
+import 'ProgramaNormal.dart';
 
 void main() {
   runApp(const MyApp());
@@ -43,7 +44,7 @@ class _MyHomePageState extends State<MyHomePage> {
   late Director _directorw = Director(_windows);
   late Director _directorl = Director(_linux);
   late Programa p;
-  List<Programa> root = [];
+  Sesion root = Sesion();
   TextEditingController _controller = TextEditingController();
   TextEditingController _versionController = TextEditingController();
   TextEditingController _sizeController = TextEditingController();
@@ -64,17 +65,18 @@ class _MyHomePageState extends State<MyHomePage> {
   }
 
   void borrar(Programa prog, Programa padre) {
-    if (padre == prog)
-      root.removeAt(root.indexOf(prog));
-    else
+    if (padre == prog) {
+      //root.removeAt(root.indexOf(prog));
+      root.eliminar(prog);
+    } else
       padre.quitar(prog);
   }
 
   void agregarProgramaRoot(String? nombre) {
     if (nombre!.isNotEmpty) {
-      p = ProgramaNormal(nombre: nombre, id: 0, usuario: "");
+      p = ProgramaNormal(nombre, 0, "");
       setState(() {
-        root.add(p);
+        root.agregar(p);
         _controller.clear();
       });
     }
@@ -82,7 +84,7 @@ class _MyHomePageState extends State<MyHomePage> {
 
   void agregarProgramaMV(Programa prog, String nombre) {
     if (nombre.isNotEmpty) {
-      p = ProgramaNormal(nombre: nombre, id: 0, usuario: "");
+      p = ProgramaNormal(nombre, 0, "");
       setState(() {
         prog.agregar(p);
         _controller.clear();
@@ -277,7 +279,7 @@ class _MyHomePageState extends State<MyHomePage> {
                 ElevatedButton(
                   onPressed: () {
                     setState(() {
-                      root.add(_directorl.construir_MV());
+                      root.agregar(_directorl.construir_MV());
                     });
                   },
                   child: Text('Agregar Máquina Virtual Linux'),
@@ -286,7 +288,7 @@ class _MyHomePageState extends State<MyHomePage> {
                 ElevatedButton(
                   onPressed: () {
                     setState(() {
-                      root.add(_directorw.construir_MV());
+                      root.agregar(_directorw.construir_MV());
                     });
                   },
                   child: Text('Agregar Máquina Virtual Windows'),
@@ -296,12 +298,12 @@ class _MyHomePageState extends State<MyHomePage> {
             SizedBox(height: 20.0),
             Expanded(
               child: ListView.builder(
-                itemCount: root.length,
+                itemCount: root.tamanio(),
                 itemBuilder: (context, index) {
                   return Container(
                     color: index.isEven ? Colors.grey.shade200 : null,
                     child: ListTile(
-                      title: filaBotones(root[index], 2, root[index]),
+                      title: filaBotones(root.get(index), 2, root.get(index)),
                     ),
                   );
                 },

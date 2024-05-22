@@ -1,7 +1,7 @@
-import 'dart:io';
+//import 'dart:io';
 
 import 'programa.dart';
-import 'programaNormal.dart';
+//import 'programaNormal.dart';
 
 class MaquinaVirtual extends Programa {
   String? so = "";

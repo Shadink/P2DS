@@ -87,16 +87,19 @@ class _MyHomePageState extends State<MyHomePage> {
     }
   }
 
-  // void agregarMVRoot(String? nombre) async {
-  //   if (nombre!.isNotEmpty) {
-  //     p = MaquinaVirtual();
-  //     try {
-  //       await root.agregar(p);
-  //       _controller.clear();
-  //     } catch (e) {}
-  //     setState(() {});
-  //   }
-  // }
+  void agregarMVWRoot() async {
+    try {
+      await root.agregar(_directorw.construir_MV(currentUser));
+    } catch (e) {}
+    setState(() {});
+  }
+
+  void agregarMVLRoot() async {
+    try {
+      await root.agregar(_directorl.construir_MV(currentUser));
+    } catch (e) {}
+    setState(() {});
+  }
 
   // void agregarProgramaMV(Programa prog, String nombre) {
   //   if (nombre.isNotEmpty) {
@@ -319,7 +322,7 @@ class _MyHomePageState extends State<MyHomePage> {
                 ElevatedButton(
                   onPressed: () {
                     setState(() {
-                      root.agregar(_directorl.construir_MV(currentUser));
+                      agregarMVLRoot();
                     });
                   },
                   child: Text('Agregar Máquina Virtual Linux'),
@@ -328,7 +331,7 @@ class _MyHomePageState extends State<MyHomePage> {
                 ElevatedButton(
                   onPressed: () {
                     setState(() {
-                      root.agregar(_directorw.construir_MV(currentUser));
+                      agregarMVWRoot();
                     });
                   },
                   child: Text('Agregar Máquina Virtual Windows'),

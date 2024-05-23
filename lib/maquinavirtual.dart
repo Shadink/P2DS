@@ -4,14 +4,21 @@ import 'Programa.dart';
 import 'ProgramaNormal.dart';
 
 class MaquinaVirtual extends Programa {
-  String? so = "";
-  String? version = "";
-  int? size = 0;
-  String usuario;
-  int id;
+  String so = "";
+  String version = "";
+  int size = 0;
+  String usuario = "";
+  int id = 0;
 
-  MaquinaVirtual(this.id, this.so, this.version, this.size, this.usuario);
-  @override
+  MaquinaVirtual(int id, String so, String version, int size, String usuario) {
+    this.id = id;
+    this.so = so;
+    this.version = version;
+    this.size = size;
+    this.usuario = usuario;
+    this.tipo = "MV";
+  }
+
   String mostrar() {
     return "Máquina virtual $so $version $size GB libres\n";
   }
@@ -105,22 +112,24 @@ class MaquinaVirtual extends Programa {
     return iguales;
   }
 
+  @override
   factory MaquinaVirtual.fromJson(Map<String, dynamic> json) {
     return MaquinaVirtual(
         json['id'] as int,
-        json['so'] as String?,
-        json['version'] as String?,
-        json['size'] as int?,
+        json['so'] as String,
+        json['version'] as String,
+        json['size'] as int,
         json['usuario'] as String);
   }
 
+  @override
   Map<String, dynamic> toJson() {
     return {
-      if (id != null) 'id': id,
-      'so': so,
+      if (id != null) 'so': so,
       'version': version,
       'size': size,
-      'usuario': usuario
+      'usuario': usuario,
+      'tipo': tipo
     };
   }
 }

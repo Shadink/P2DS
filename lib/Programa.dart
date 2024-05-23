@@ -1,10 +1,12 @@
 import 'dart:convert'; // Importa para el manejo de JSON
-import 'package:ejgrupal/ProgramaNormal.dart'; // Asegúrate de que este archivo y la clase existan y estén definidos correctamente.
+import 'package:ejgrupal/ProgramaNormal.dart';
+import 'package:ejgrupal/maquinavirtual.dart'; // Asegúrate de que este archivo y la clase existan y estén definidos correctamente.
 
 class Programa {
   List<Programa> hijos = [];
   int id = 0;
   String usuario = "";
+  String tipo = "";
 
   Programa();
 
@@ -44,7 +46,11 @@ class Programa {
 
   // Implementación de fromJson y toJson
   factory Programa.fromJson(Map<String, dynamic> json) {
-    return Programa();
+    if (json['tipo'] == "MV") {
+      return (MaquinaVirtual.fromJson(json) as Programa);
+    } else {
+      return (ProgramaNormal.fromJson(json) as Programa);
+    }
   }
 
   Map<String, dynamic> toJson() {

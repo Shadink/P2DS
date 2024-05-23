@@ -9,6 +9,7 @@ class ProgramaNormal extends Programa {
     this.nombre = nombre;
     this.id = id;
     this.usuario = usuario;
+    this.tipo = "PN";
   }
 
   @override
@@ -67,12 +68,14 @@ class ProgramaNormal extends Programa {
     return false;
   }
 
+  @override
   factory ProgramaNormal.fromJson(Map<String, dynamic> json) {
     return ProgramaNormal(json['nombre'] as String?, json['id'] as int,
         json['usuario'] as String);
   }
 
+  @override
   Map<String, dynamic> toJson() {
-    return {if (id != null) 'id': id, 'nombre': nombre, 'usuario': usuario};
+    return {if (id != null) 'nombre': nombre, 'usuario': usuario, 'tipo': tipo};
   }
 }

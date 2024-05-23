@@ -5,8 +5,8 @@ abstract class MVBuilder {
   List<Programa> hijos = [];
   late MaquinaVirtual mv;
 
-  void crearNuevaMV() {
-    mv = MaquinaVirtual(0, "", "", 0, "");
+  void crearNuevaMV(String usuario) {
+    mv = MaquinaVirtual(0, "", "", 0, usuario);
   }
 
   void anadirSO();

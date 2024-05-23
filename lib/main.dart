@@ -49,7 +49,7 @@ class _MyHomePageState extends State<MyHomePage> {
   TextEditingController _versionController = TextEditingController();
   TextEditingController _sizeController = TextEditingController();
 
-  String currentUser = "";
+  String currentUser = "Carlos";
   List<String> users = ["Daniel", "Carlos", "Lorena", "Mario"];
 
   @override
@@ -59,38 +59,54 @@ class _MyHomePageState extends State<MyHomePage> {
   }
 
   void cargarProgramasIniciales() async {
-    try {} catch (e) {
+    try {
+      await root.cargarPrograma(currentUser);
+      setState(() {});
+    } catch (e) {
       print("Error");
     }
   }
 
-  void borrar(Programa prog, Programa padre) {
-    if (padre == prog) {
-      //root.removeAt(root.indexOf(prog));
-      root.eliminar(prog);
-    } else
-      padre.quitar(prog);
+  void borrar(Programa prog) async {
+    //root.removeAt(root.indexOf(prog));
+    try {
+      await root.eliminar(prog);
+    } catch (e) {}
+
+    setState(() {});
   }
 
-  void agregarProgramaRoot(String? nombre) {
+  void agregarProgramaRoot(String? nombre) async {
     if (nombre!.isNotEmpty) {
-      p = ProgramaNormal(nombre, 0, "");
-      setState(() {
-        root.agregar(p);
+      p = ProgramaNormal(nombre, 0, currentUser);
+      try {
+        await root.agregar(p);
         _controller.clear();
-      });
+      } catch (e) {}
+      setState(() {});
     }
   }
 
-  void agregarProgramaMV(Programa prog, String nombre) {
-    if (nombre.isNotEmpty) {
-      p = ProgramaNormal(nombre, 0, "");
-      setState(() {
-        prog.agregar(p);
-        _controller.clear();
-      });
-    }
-  }
+  // void agregarMVRoot(String? nombre) async {
+  //   if (nombre!.isNotEmpty) {
+  //     p = MaquinaVirtual();
+  //     try {
+  //       await root.agregar(p);
+  //       _controller.clear();
+  //     } catch (e) {}
+  //     setState(() {});
+  //   }
+  // }
+
+  // void agregarProgramaMV(Programa prog, String nombre) {
+  //   if (nombre.isNotEmpty) {
+  //     p = ProgramaNormal(nombre, 0, "");
+  //     setState(() {
+  //       prog.agregar(p);
+  //       _controller.clear();
+  //     });
+  //   }
+  // }
 
   // AlertDialog dialogoActualizacion(Programa prog) {
   //   return AlertDialog(
@@ -160,35 +176,35 @@ class _MyHomePageState extends State<MyHomePage> {
             Expanded(
               child: Text(t + prog.mostrar()),
             ),
-            ElevatedButton(
-              onPressed: () {
-                agregarProgramaMV(prog, _controller.text);
-              },
-              child: Text(
-                'Agregar Programa',
-                style: const TextStyle(
-                  color: Color.fromARGB(255, 0, 38, 255),
-                ),
-              ),
-            ),
-            SizedBox(width: 20.0),
-            ElevatedButton(
-              onPressed: () {
-                setState(() {
-                  prog.agregar(_directorl.construir_MV());
-                });
-              },
-              child: Text('Agregar Linux'),
-            ),
-            SizedBox(width: 20.0),
-            ElevatedButton(
-              onPressed: () {
-                setState(() {
-                  prog.agregar(_directorw.construir_MV());
-                });
-              },
-              child: Text('Agregar Windows'),
-            ),
+            // ElevatedButton(
+            //   onPressed: () {
+            //     agregarProgramaMV(prog, _controller.text);
+            //   },
+            //   child: Text(
+            //     'Agregar Programa',
+            //     style: const TextStyle(
+            //       color: Color.fromARGB(255, 0, 38, 255),
+            //     ),
+            //   ),
+            // ),
+            // SizedBox(width: 20.0),
+            // ElevatedButton(
+            //   onPressed: () {
+            //     setState(() {
+            //       prog.agregar(_directorl.construir_MV());
+            //     });
+            //   },
+            //   child: Text('Agregar Linux'),
+            // ),
+            // SizedBox(width: 20.0),
+            // ElevatedButton(
+            //   onPressed: () {
+            //     setState(() {
+            //       prog.agregar(_directorw.construir_MV());
+            //     });
+            //   },
+            //   child: Text('Agregar Windows'),
+            // ),
             // SizedBox(width: 20.0),
             // IconButton(
             //   icon: Icon(Icons.update),
@@ -206,18 +222,18 @@ class _MyHomePageState extends State<MyHomePage> {
               icon: Icon(Icons.delete),
               onPressed: () {
                 setState(() {
-                  borrar(prog, padre);
+                  borrar(prog);
                 });
               },
             ),
           ],
         ),
-        if (prog.hijos.isNotEmpty)
-          Column(
-            children: prog.hijos
-                .map((childProg) => filaBotones(childProg, tab + 2, prog))
-                .toList(),
-          ),
+        // if (prog.hijos.isNotEmpty)
+        //   Column(
+        //     children: prog.hijos
+        //         .map((childProg) => filaBotones(childProg, tab + 2, prog))
+        //         .toList(),
+        //   ),
       ],
     );
   }
@@ -228,6 +244,26 @@ class _MyHomePageState extends State<MyHomePage> {
       appBar: AppBar(
         backgroundColor: Theme.of(context).colorScheme.inversePrimary,
         title: Text(widget.title),
+        actions: <Widget>[
+          DropdownButton<String>(
+            value: currentUser,
+            icon: Icon(Icons.arrow_downward),
+            onChanged: (String? newValue) {
+              if (newValue != null && newValue != currentUser) {
+                setState(() {
+                  currentUser = newValue;
+                  cargarProgramasIniciales();
+                });
+              }
+            },
+            items: users.map<DropdownMenuItem<String>>((String value) {
+              return DropdownMenuItem<String>(
+                value: value,
+                child: Text(value),
+              );
+            }).toList(),
+          ),
+        ],
       ),
       body: Center(
         child: Column(
@@ -250,7 +286,9 @@ class _MyHomePageState extends State<MyHomePage> {
                             ),
                           ),
                           onSubmitted: (String nombre) {
-                            agregarProgramaRoot(nombre);
+                            setState(() {
+                              agregarProgramaRoot(nombre);
+                            });
                           },
                         ),
                       ),
@@ -266,7 +304,9 @@ class _MyHomePageState extends State<MyHomePage> {
               children: [
                 ElevatedButton(
                   onPressed: () {
-                    agregarProgramaRoot(_controller.text);
+                    setState(() {
+                      agregarProgramaRoot(_controller.text);
+                    });
                   },
                   child: Text(
                     'Agregar Programa',
@@ -279,7 +319,7 @@ class _MyHomePageState extends State<MyHomePage> {
                 ElevatedButton(
                   onPressed: () {
                     setState(() {
-                      root.agregar(_directorl.construir_MV());
+                      root.agregar(_directorl.construir_MV(currentUser));
                     });
                   },
                   child: Text('Agregar Máquina Virtual Linux'),
@@ -288,7 +328,7 @@ class _MyHomePageState extends State<MyHomePage> {
                 ElevatedButton(
                   onPressed: () {
                     setState(() {
-                      root.agregar(_directorw.construir_MV());
+                      root.agregar(_directorw.construir_MV(currentUser));
                     });
                   },
                   child: Text('Agregar Máquina Virtual Windows'),

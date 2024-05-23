@@ -2,16 +2,16 @@ import 'package:ejgrupal/linuxbuilder.dart';
 import 'mvbuilder.dart';
 import 'maquinavirtual.dart';
 
-class Director{
+class Director {
   MVBuilder builder;
 
   Director(this.builder);
 
-  MaquinaVirtual construir_MV(){
-    builder.crearNuevaMV();
+  MaquinaVirtual construir_MV(String usuario) {
+    builder.crearNuevaMV(usuario);
     builder.anadirSO();
     builder.anadirVersion();
-    builder.anadirTamano(); 
+    builder.anadirTamano();
     return builder.mv;
   }
 }
